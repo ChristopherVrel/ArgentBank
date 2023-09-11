@@ -1,0 +1,386 @@
+swagger: "2.0"
+info:
+  title: "Bank Argent API documentation"
+  description: "Contains all available API endpoints in this codebase"
+  version: "1.0.0"
+  termsOfService: "http://swagger.io/terms/"
+host: "localhost:3001"
+basePath: "/api/v1"
+tags:
+- name: "User"
+  description: "Operations about user"
+schemes:
+- "http"
+paths:
+  /user/login:
+    post:
+      tags:
+        - "User"
+      summary: "Logs user into the system"
+      description: ""
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Login Payload"
+          required: true
+          schema:
+            $ref: "#/definitions/Login"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Login Successfully"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        "400":
+          description: "Invalid Fields"
+        "500":
+          description: "Internal Server Error"
+  /user/signup:
+    post:
+      tags:
+        - "User"
+      summary: "Signup user into the system"
+      description: ""
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Signup Payload"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Signup Successfully"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "400":
+          description: "Invalid Fields"
+        "500":
+          description: "Internal Server Error"
+  /user/profile:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - "User"
+      summary: "Fetching user profile"
+      description: ""
+      parameters:
+        - in: "header"
+          name: "Authorization"
+          type: "string"
+          description: "Attach Bearer JWT token"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "User profile retrieved successully"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "400":
+          description: "Invalid Fields"
+        "500":
+          description: "Internal Server Error"
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - "User"
+      summary: "Updating user profile"
+      description: ""
+      parameters:
+        - in: "header"
+          name: "Authorization"
+          type: "string"
+          description: "Attach Bearer JWT token"
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Update user profile attributes"
+          required: true
+          schema:
+            $ref: "#/definitions/UserProfile"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "User profile retrieved successully"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+        "400":
+          description: "Invalid Fields"
+        "500":
+          description: "Internal Server Error"
+  /user/accounts:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - "User"
+      summary: "Fetching user accounts"
+      description: ""
+      parameters:
+        - in: "header"
+          name: "Authorization"
+          type: "string"
+          description: "Attach Bearer JWT token"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Accounts list retrieved successully"
+          schema:
+            $ref: '#/definitions/AccountsResponse'
+        "401":
+          description: "Unauthorized user"
+        "500":
+          description: "Internal Server Error"
+
+  /user/accounts/{accountID}/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - "User"
+      summary: "Fetching account transactions"
+      description: "Fetching all transactions from a specified account"
+      parameters:
+        - in: "header"
+          name: "Authorization"
+          type: "string"
+          description: "Attach Bearer JWT token"
+          required: true
+        - in: "path"
+          name: "accountID"
+          type: "string"
+          description: "Targeted account id"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Transactions retrieved successully"
+          schema:
+            $ref: '#/definitions/TransactionsResponse'
+        "401":
+          description: "Unauthorized user"
+        "404":
+          description: "This account id does not exist"
+        "500":
+          description: "Internal Server Error"
+  /user/accounts/{accountID}/transactions/{transactionID}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - "User"
+      summary: "Fetching transaction"
+      description: "Fetching a transaction from a specified account"
+      parameters:
+        - in: "header"
+          name: "Authorization"
+          type: "string"
+          description: "Attach Bearer JWT token"
+          required: true
+        - in: "path"
+          name: "accountID"
+          type: "string"
+          description: "Targeted account id"
+          required: true
+        - in: "path"
+          name: "transactionID"
+          type: "string"
+          description: "Targeted transaction id"
+          required: true
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Transaction retrieved successully"
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        "401":
+          description: "Unauthorized user"
+        "404":
+          description: "This account id or transaction id does not exist"
+        "500":
+          description: "Internal Server Error"
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - "User"
+      summary: "Updating user profile"
+      description: ""
+      parameters:
+        - in: "header"
+          name: "Authorization"
+          type: "string"
+          description: "Attach Bearer JWT token"
+          required: true
+        - in: "path"
+          name: "accountID"
+          type: "string"
+          description: "Targeted account id"
+          required: true
+        - in: "path"
+          name: "transactionID"
+          type: "string"
+          description: "Targeted transaction id"
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Update account transaction attributes"
+          required: true
+          schema:
+            $ref: "#/definitions/Transaction"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Transaction updated successully"
+          schema:
+            $ref: "#/definitions/TransactionResponse"
+        "400":
+          description: "Invalid Fields"
+        "401":
+          description: "Unauthorized user"
+        "404":
+          description: "This account id or transaction id does not exist"
+        "500":
+          description: "Internal Server Error"
+securityDefinitions:
+  Bearer:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  User:
+    properties:
+      email:
+        type: "string"
+        description: "user email"
+      password:
+        type: "string"
+        description: "user password"
+      firstName:
+        type: "string"
+        description: "user first name"
+      lastName:
+        type: "string"
+        description: "user last name"
+  Login:
+    properties:
+      email:
+        type: "string"
+        description: "user email"
+      password:
+        type: "string"
+        description: "user password"
+  Transaction:
+    properties:
+      category:
+        type: "string"
+        description: "transaction category"
+      note:
+        type: "string"
+        description: "user note"
+  UserProfile:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+  LoginResponse:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+  ApiResponse:
+    type: "object"
+    properties:
+      status:
+        type: "integer"
+      message:
+        type: "string"
+      body:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+          email:
+            type: "string"
+  AccountsResponse:
+    type: "object"
+    properties:
+      status:
+        type: "integer"
+      message:
+        type: "string"
+      body:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+            name:
+              type: "string"
+            balance:
+              type: "string"
+  TransactionsResponse:
+    type: "object"
+    properties:
+      status:
+        type: "integer"
+      message:
+        type: "string"
+      body:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+            date:
+              type: "string"
+              format: "date"
+            desc:
+              type: "string"
+            amount:
+              type: "number"
+            balance:
+              type: "number"
+  TransactionResponse:
+    type: "object"
+    properties:
+      status:
+        type: "integer"
+      message:
+        type: "string"
+      body:
+          type: "object"
+          properties:
+            id:
+              type: "string"
+            date:
+              type: "string"
+              format: "date"
+            desc:
+              type: "string"
+            amount:
+              type: "number"
+            balance:
+              type: "number"  
+            type:
+              type: "string"
+            category:
+              type: "string"
+            note:
+              type: "string"

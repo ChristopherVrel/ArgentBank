@@ -9,7 +9,7 @@ const login = (email, password) => {
         }).then((res) => {
             const token = res.data.body.token;
 
-            localStorage.setItem("jwtToken", res.data.body.token);
+            localStorage.setItem("jwtToken", token);
             
             // set axios header
             setAuthorizationToken(token);

@@ -57,6 +57,8 @@
 .profile-form .input-container {
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .profile-form .input-container input {

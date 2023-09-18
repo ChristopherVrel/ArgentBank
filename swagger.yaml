@@ -160,6 +160,18 @@ paths:
           type: "string"
           description: "Targeted account id"
           required: true
+        - in: "query"
+          name: "startRange"
+          type: "string"
+          format: "date"
+          default: "01/09/2023"
+          description: "Date range to get results - default = current month"
+        - in: "query"
+          name: "endRange"
+          type: "string"
+          format: "date"
+          default: "30/09/2023"
+          description: "Date range to get results - default = current month"
       produces:
         - "application/json"
       responses:

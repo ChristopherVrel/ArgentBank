@@ -13,9 +13,17 @@ const Profile = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user) {
-            console.log(user);
+        if (!localStorage.userConnected) {
+            navigate("/");
+        }
+        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
+    useEffect(() => {
+        console.log(user);
+
+        if (user) {
             if (!user?.isLogged) {
                 navigate("/");
             }
@@ -25,6 +33,7 @@ const Profile = () => {
                 setLastName(user?.lastName);
             }
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
